@@ -1,10 +1,28 @@
+function isArrayLikeTrials(x) {
+    if (Array.isArray(x)) {
+        return true;
+    }
+    return Object.prototype.toString.call(x) === "[object Array]";
+}
+
+// Resolve trial list from exp_sample.js (attached to window for reliable access across scripts).
+function getImageListByGroup() {
+    if (typeof window !== "undefined" && window.imageListByGroup != null) {
+        return window.imageListByGroup;
+    }
+    if (typeof imageListByGroup !== "undefined") {
+        return imageListByGroup;
+    }
+    return null;
+}
+
 // Flatten grouped trial data (trial_info/exp_sample.js) or use a plain array of trials.
 function flattenTrialPool(source) {
     var rows = [];
     if (!source) {
         return rows;
     }
-    if (Array.isArray(source)) {
+    if (isArrayLikeTrials(source)) {
         source.forEach(function(item) {
             rows.push(normalizeTrialRow(item));
         });
@@ -59,9 +77,8 @@ exp.customize = function() {
         thanks
     ];
     const REQUIRED_TRIALS = 5;
-    let trial_pool = flattenTrialPool(
-        typeof imageListByGroup !== "undefined" ? imageListByGroup : []
-    );
+    var trialSource = getImageListByGroup();
+    let trial_pool = flattenTrialPool(trialSource != null ? trialSource : []);
     var trial_pool_size = trial_pool.length;
 
     // Each row should contain: condition, filepath, focal, background, description
@@ -127,8 +144,8 @@ exp.customize = function() {
       if (trial_pool_size === 0) {
         alert(
           "Randomization failed: no trials loaded. " +
-          "Check that index.html includes trial_info/exp_sample.js before scripts/experiment.js " +
-          "and that the file exists (it must define imageListByGroup)."
+          "Check that index.html includes trial_info/exp_sample.js before scripts/experiment.js, " +
+          "that the file loads without errors, and that it defines imageListByGroup (also on window)."
         );
       } else {
         alert(

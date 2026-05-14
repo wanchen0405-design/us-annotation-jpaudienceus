@@ -21,12 +21,14 @@
         <!-- config -->
         <script src="config/config_deploy.js"></script>
 
+        <!-- Trial pool: must load before experiment.js (defines imageListByGroup on window) -->
+        <script src="trial_info/exp_sample.js"></script>
+
         <!-- views (must be loaded before experiment.js) -->
         <script src="views/views.js"></script>
 
         <!-- local js files -->
         <script src="scripts/main.js"></script>
-        <script src="trial_info/exp_sample.js"></script>
         <script src="scripts/experiment.js"></script>
         <script src="scripts/helpers.js"></script>
         <script src="scripts/utils.js"></script>

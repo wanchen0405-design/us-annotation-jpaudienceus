@@ -1,4 +1,4 @@
-$("document").ready(function() {
+$(document).ready(function() {
     exp.init();
     // prevent scrolling when space is pressed (firefox does it)
     window.onkeydown = function(e) {
