@@ -13,6 +13,9 @@ exp.initProgressBar = function() {
         var bar;
         var i;
         var view = $(".view");
+        if (view.find(".progress-bar-container").length > 0) {
+            return;
+        }
         var barWidth = exp.progress_bar_width;
         var clearfix = jQuery("<div/>", {
             class: "clearfix"
@@ -82,11 +85,16 @@ exp.initProgressBar = function() {
             filledPart = (exp.currentTrialInViewCounter - 1) * div;
         }
 
-        filledElem = jQuery("<span/>", {
-            id: "filled"
-        }).appendTo(progressBars[filledChunks]);
+        filledElem = progressBars.eq(filledChunks).find("#filled");
+        if (filledElem.length === 0) {
+            filledElem = jQuery("<span/>", {
+                id: "filled"
+            }).appendTo(progressBars[filledChunks]);
+        } else {
+            filledElem = filledElem.first();
+        }
 
-        $("#filled").css("width", filledPart);
+        filledElem.css("width", filledPart);
         progressTrials++;
 
         if (exp.progress_bar_style === "chunks") {
